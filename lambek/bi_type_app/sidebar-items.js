@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["wrap_app",""]],"trait":[["BiTypeApp",""],["BiTypeAppGeneric",""],["BiTypeAppGenericCont",""],["BiTypeCon",""],["HasBiTypeApp",""]],"type":[["BiApp",""]]});

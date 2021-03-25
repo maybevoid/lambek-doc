@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Borrow",""],["BorrowMut",""],["Identity",""],["VecF",""]],"fn":[["wrap_app",""]],"struct":[["Const",""]],"trait":[["HasTypeApp",""],["TypeApp",""],["TypeAppCont",""],["TypeAppGeneric",""],["TypeCon","A type `F` implements `TypeCon` to mark itself as having the kind `Type -> Type`."]],"type":[["App",""]]});

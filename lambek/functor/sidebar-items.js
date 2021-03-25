@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["Applicative",""],["Functor",""],["Monad",""],["MonadOnce",""]]});
