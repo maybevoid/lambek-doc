@@ -190,6 +190,97 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Traits for the kind of unary type application, `Type -&gt; Type`.</span>
 <span class="doccomment">//!</span>
@@ -199,17 +290,36 @@
 <span class="doccomment">//! e.g. `Vec&lt;u8&gt;`. Although the upcoming generic associated types (GAT)</span>
 <span class="doccomment">//! feature will partially solve this issue, the feature is not yet</span>
 <span class="doccomment">//! stable and may subject to changes.</span>
-<span class="doccomment">//!</span>
 <span class="doccomment">//! An alternative approach is to use _defunctionalization_ to encode</span>
 <span class="doccomment">//! regular Rust types to have kinds other than `Type`. [TypeApp]</span>
 <span class="doccomment">//! is one such trait for encoding types of kind `Type -&gt; Type`.</span>
-<span class="doccomment">//! For a practical example, refer to [VecF].</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! To promote a type constructor such as [Vec] to HKT, we define a</span>
+<span class="doccomment">//! proxy type [VecF] and implement [TypeCon] and [TypeApp] for them.</span>
+<span class="doccomment">//! We then use `VecF` as the unapplied version of `Vec` in our code.</span>
+<span class="doccomment">//! Inside type signatures, we use `App&lt;VecF, X&gt;` to apply `VecF`</span>
+<span class="doccomment">//! to a type `X`. `App&lt;VecF, X&gt;` is isomorphic to `Vec&lt;X&gt;`, and</span>
+<span class="doccomment">//! we can convert a value `xs: App&lt;VecF, X&gt;` back into `Vec&lt;X&gt;`</span>
+<span class="doccomment">//! by calling `xs.get_applied()`.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The type [App] encapsulates the [TypeApp] constraint using</span>
+<span class="doccomment">//! [HasTypeApp]. With that, type signatures that use `App&lt;F, X&gt;`</span>
+<span class="doccomment">//! do not need to have `TypeApp&lt;F, X&gt;` in their trait bounds.</span>
+<span class="doccomment">//! This makes it significantly easier to perform arbitrary type</span>
+<span class="doccomment">//! applications without having to worry about polluting the</span>
+<span class="doccomment">//! trait bounds with `TypeApp` constraints. See</span>
+<span class="doccomment">//! [Functor](crate::functor::Functor) for a practical use of [App].</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{
+  <span class="ident">any</span>::<span class="ident">Any</span>,
+  <span class="ident">marker</span>::<span class="ident">PhantomData</span>,
+};
 
-<span class="doccomment">/// A type `F` implements `TypeCon` to mark itself as having the kind</span>
+<span class="doccomment">/// A proxy type `F` implements `TypeCon` to mark itself as having the kind</span>
 <span class="doccomment">/// `Type -&gt; Type`.</span>
 <span class="doccomment">///</span>
+<span class="doccomment">/// The type `F` itself is never used directly, so it don&#39;t need to have</span>
+<span class="doccomment">/// any inhabitant and may be declared as an empty enum.</span>
 <span class="doccomment">/// Although the requirement is non-binding, types</span>
 <span class="doccomment">/// that implement `TypeCon` are also expected to implement [TypeApp].</span>
 <span class="doccomment">/// For stronger guarantee that a type `F` really implements</span>
@@ -231,16 +341,15 @@
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TypeAppGeneric</span>: <span class="ident">TypeCon</span> <span class="op">+</span> <span class="ident">Sized</span>
 {
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">cont</span> : <span class="kw">impl</span> <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span> : <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Cont</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
   <span class="kw">where</span>
-    <span class="self">Self</span> : <span class="lifetime">&#39;a</span>;
+    <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
+    <span class="ident">Cont</span> : <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span> : <span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>
 {
-  <span class="kw">fn</span> <span class="ident">on_type_app</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  <span class="kw">fn</span> <span class="ident">on_type_app</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="ident">F</span> : <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span><span class="op">&gt;</span>;
 }
@@ -258,6 +367,11 @@
   <span class="kw">fn</span> <span class="ident">get_applied_borrow_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">F</span>::<span class="ident">Applied</span>
   <span class="kw">where</span>
     <span class="ident">F</span> : <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span><span class="op">&gt;</span>;
+
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(
+    <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="self">self</span>,
+    <span class="ident">cont</span> : <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">X</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="lifetime">&#39;b</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">X</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">HasTypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">X</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
@@ -267,6 +381,69 @@
   <span class="ident">F</span> : <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>, <span class="ident">Applied</span> <span class="op">=</span> <span class="ident">FX</span><span class="op">&gt;</span>,
 {
   <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">fx</span>)
+}
+
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">define_type_app</span> {
+  ( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>:<span class="ident">ident</span> ) <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span> {}
+    <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro">impl_type_app</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>);
+  };
+  ( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span>:<span class="ident">ident</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span>:<span class="ident">ident</span> ),<span class="op">+</span> $(,)<span class="question-mark">?</span> <span class="op">&gt;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>:<span class="ident">ident</span> ) <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_parens</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="op">*</span> <span class="op">&gt;</span>
+      ( <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span><span class="op">&lt;</span> ( $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="op">*</span> ) <span class="op">&gt;</span> );
+
+    <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro">impl_type_app</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span> <span class="op">&lt;</span>$( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="op">*</span> <span class="op">&gt;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>);
+  };
+}
+
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_type_app</span> {
+  ( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>:<span class="ident">ident</span> ) <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span> {}
+
+    <span class="kw">impl</span> <span class="op">&lt;</span> <span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">&gt;</span> <span class="ident">TypeApp</span> <span class="op">&lt;</span> <span class="lifetime">&#39;a</span>, <span class="ident">X</span> <span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span> {
+      <span class="kw">type</span> <span class="ident">Applied</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span> <span class="op">&lt;</span> <span class="ident">X</span> <span class="op">&gt;</span>;
+    }
+
+    <span class="kw">impl</span> <span class="ident">TypeAppGeneric</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span>
+    {
+      <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+        <span class="ident">cont</span> : <span class="ident">Box</span> <span class="op">&lt;</span> <span class="ident">Cont</span> <span class="op">&gt;</span>
+      ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+      <span class="kw">where</span>
+        <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
+        <span class="ident">Cont</span>: <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
+      {
+        <span class="ident">cont</span>.<span class="ident">on_type_app</span>()
+      }
+    }
+  };
+  ( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span>:<span class="ident">ident</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span>:<span class="ident">ident</span> ),<span class="op">+</span> $(,)<span class="question-mark">?</span> <span class="op">&gt;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>:<span class="ident">ident</span> ) <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="op">*</span> <span class="op">&gt;</span>
+      <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="op">*</span> <span class="op">&gt;</span> {}
+
+    <span class="kw">impl</span> <span class="op">&lt;</span> <span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span>, $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> : <span class="lifetime">&#39;a</span> ),<span class="op">*</span> <span class="op">&gt;</span>
+      <span class="ident">TypeApp</span> <span class="op">&lt;</span> <span class="lifetime">&#39;a</span>, <span class="ident">X</span> <span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="op">*</span> <span class="op">&gt;</span>
+    {
+      <span class="kw">type</span> <span class="ident">Applied</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="kw-2">*</span>, <span class="ident">X</span> <span class="op">&gt;</span>;
+    }
+
+    <span class="kw">impl</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="op">*</span> <span class="op">&gt;</span>
+      <span class="ident">TypeAppGeneric</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proxy</span> <span class="op">&lt;</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">types</span> ),<span class="op">*</span> <span class="op">&gt;</span>
+    {
+      <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+        <span class="ident">cont</span> : <span class="ident">Box</span> <span class="op">&lt;</span> <span class="ident">Cont</span> <span class="op">&gt;</span>
+      ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+      <span class="kw">where</span>
+        <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
+        <span class="ident">Cont</span>: <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
+      {
+        <span class="ident">cont</span>.<span class="ident">on_type_app</span>()
+      }
+    }
+  }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span> : <span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">FX</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">HasTypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">X</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FX</span>
@@ -287,29 +464,38 @@
   {
     <span class="self">self</span>
   }
-}
 
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Identity</span> {}
-
-<span class="kw">impl</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">Identity</span> {}
-
-<span class="kw">impl</span> <span class="ident">TypeAppGeneric</span> <span class="kw">for</span> <span class="ident">Identity</span>
-{
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">cont</span> : <span class="kw">impl</span> <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
-  <span class="kw">where</span>
-    <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(
+    <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="self">self</span>,
+    <span class="ident">cont</span> : <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">X</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="lifetime">&#39;b</span><span class="op">&gt;</span>
   {
     <span class="ident">cont</span>.<span class="ident">on_type_app</span>()
   }
 }
+
+<span class="doccomment">/// `App&lt;Identity, X&gt; ~ X`</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Identity</span> {}
+
+<span class="kw">impl</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">Identity</span> {}
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Identity</span>
 {
   <span class="kw">type</span> <span class="ident">Applied</span> <span class="op">=</span> <span class="ident">X</span>;
 }
 
+<span class="kw">impl</span> <span class="ident">TypeAppGeneric</span> <span class="kw">for</span> <span class="ident">Identity</span>
+{
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span> : <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Cont</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  <span class="kw">where</span>
+    <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
+    <span class="ident">Cont</span> : <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
+  {
+    <span class="ident">cont</span>.<span class="ident">on_type_app</span>()
+  }
+}
+
+<span class="doccomment">/// `App&lt;Const&lt;A&gt;, X&gt; ~ A`</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Const</span><span class="op">&lt;</span><span class="ident">A</span> : <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span> : <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">Const</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {}
@@ -319,6 +505,7 @@
   <span class="kw">type</span> <span class="ident">Applied</span> <span class="op">=</span> <span class="ident">A</span>;
 }
 
+<span class="doccomment">/// `App&lt;&#39;a, Borrow, X&gt; ~ &amp;&#39;a X`</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Borrow</span> {}
 
 <span class="kw">impl</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">Borrow</span> {}
@@ -330,16 +517,16 @@
 
 <span class="kw">impl</span> <span class="ident">TypeAppGeneric</span> <span class="kw">for</span> <span class="ident">Borrow</span>
 {
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">cont</span> : <span class="kw">impl</span> <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span> : <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Cont</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
+    <span class="ident">Cont</span> : <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
   {
     <span class="ident">cont</span>.<span class="ident">on_type_app</span>()
   }
 }
 
+<span class="doccomment">/// `App&lt;&#39;a, BorrowMutF, X&gt; ~ &amp;&#39;a mut X`</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BorrowMut</span> {}
 
 <span class="kw">impl</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">BorrowMut</span> {}
@@ -351,35 +538,30 @@
 
 <span class="kw">impl</span> <span class="ident">TypeAppGeneric</span> <span class="kw">for</span> <span class="ident">BorrowMut</span>
 {
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">cont</span> : <span class="kw">impl</span> <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span> : <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Cont</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
+    <span class="ident">Cont</span> : <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
   {
     <span class="ident">cont</span>.<span class="ident">on_type_app</span>()
   }
 }
 
+<span class="doccomment">/// `App&lt;BoxF, X&gt; ~ Box&lt;X&gt;`</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BoxF</span> {}
+<span class="macro">impl_type_app</span><span class="macro">!</span>(<span class="ident">BoxF</span>, <span class="ident">Box</span>);
+
+<span class="doccomment">/// `App&lt;VecF, X&gt; ~ Vec&lt;X&gt;`</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">VecF</span> {}
+<span class="macro">impl_type_app</span><span class="macro">!</span>(<span class="ident">VecF</span>, <span class="ident">Vec</span>);
 
-<span class="kw">impl</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">VecF</span> {}
+<span class="doccomment">/// `App&lt;OptionF, X&gt; ~ Option&lt;X&gt;`</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OptionF</span> {}
+<span class="macro">impl_type_app</span><span class="macro">!</span>(<span class="ident">OptionF</span>, <span class="prelude-ty">Option</span>);
 
-<span class="kw">impl</span> <span class="op">&lt;</span> <span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">&gt;</span> <span class="ident">TypeApp</span> <span class="op">&lt;</span> <span class="lifetime">&#39;a</span>, <span class="ident">X</span> <span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VecF</span> {
-  <span class="kw">type</span> <span class="ident">Applied</span> <span class="op">=</span> <span class="ident">Vec</span> <span class="op">&lt;</span> <span class="ident">X</span> <span class="op">&gt;</span>;
-}
-
-<span class="kw">impl</span> <span class="ident">TypeAppGeneric</span> <span class="kw">for</span> <span class="ident">VecF</span>
-{
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span> : <span class="lifetime">&#39;a</span>, <span class="ident">R</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">cont</span> : <span class="kw">impl</span> <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
-  <span class="kw">where</span>
-    <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
-  {
-    <span class="ident">cont</span>.<span class="ident">on_type_app</span>()
-  }
-}
+<span class="doccomment">/// `App&lt;ResultF&lt;E&gt;, X&gt; ~ Result&lt;E, X&gt;`</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResultF</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>);
+<span class="macro">impl_type_app</span><span class="macro">!</span>(<span class="ident">ResultF</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>, <span class="prelude-ty">Result</span>);
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="lambek"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
