@@ -38,42 +38,50 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">type_app</span>::<span class="kw-2">*</span>;
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Functor</span>: <span class="ident">TypeAppGeneric</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Functor</span>: <span class="ident">TypeCon</span>
 {
-  <span class="kw">fn</span> <span class="ident">fmap</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">fa</span> : <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">B</span><span class="op">&gt;</span>
+  <span class="doccomment">/// `fmap :: forall a b . f a -&gt; (a -&gt; b) -&gt; f b`</span>
+  <span class="kw">fn</span> <span class="ident">fmap</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span>, <span class="ident">B</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="ident">fa</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>,
+    <span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">Fn</span>(<span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">B</span>,
+  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">B</span><span class="op">&gt;</span>
   <span class="kw">where</span>
-    <span class="self">Self</span> : <span class="lifetime">&#39;a</span>;
+    <span class="self">Self</span>: <span class="lifetime">&#39;a</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Applicative</span>: <span class="ident">Functor</span>
 {
-  <span class="kw">fn</span> <span class="ident">pure</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">a</span> : <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>;
+  <span class="kw">fn</span> <span class="ident">pure</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>;
 
-  <span class="kw">fn</span> <span class="ident">apply</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span> : <span class="lifetime">&#39;a</span>, <span class="ident">B</span> : <span class="lifetime">&#39;a</span>, <span class="ident">F</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">app</span> : <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>,
-    <span class="ident">fa</span> : <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>,
+  <span class="kw">fn</span> <span class="ident">apply</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span>, <span class="ident">B</span>: <span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="ident">app</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>,
+    <span class="ident">fa</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>,
   ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>
   <span class="kw">where</span>
-    <span class="self">Self</span> : <span class="lifetime">&#39;a</span>,
-    <span class="ident">F</span> : <span class="ident">Fn</span>(<span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">B</span>;
+    <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">B</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Monad</span>: <span class="ident">Applicative</span>
 {
-  <span class="kw">fn</span> <span class="ident">bind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span> : <span class="lifetime">&#39;a</span>, <span class="ident">B</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">ma</span> : <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>,
-    <span class="ident">cont</span> : <span class="kw">impl</span> <span class="ident">Fn</span>(<span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">B</span><span class="op">&gt;</span>,
+  <span class="kw">fn</span> <span class="ident">bind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span>, <span class="ident">B</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="ident">ma</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>,
+    <span class="ident">cont</span>: <span class="kw">impl</span> <span class="ident">Fn</span>(<span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">B</span><span class="op">&gt;</span>,
   ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">B</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">MonadOnce</span>: <span class="ident">Applicative</span>
 {
-  <span class="kw">fn</span> <span class="ident">bind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span> : <span class="lifetime">&#39;a</span>, <span class="ident">B</span> : <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">ma</span> : <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>,
-    <span class="ident">cont</span> : <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">B</span><span class="op">&gt;</span>,
+  <span class="kw">fn</span> <span class="ident">bind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span>, <span class="ident">B</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="ident">ma</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">A</span><span class="op">&gt;</span>,
+    <span class="ident">cont</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">B</span><span class="op">&gt;</span>,
   ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">B</span><span class="op">&gt;</span>;
 }
 </pre></div>
