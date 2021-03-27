@@ -13,7 +13,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bi_type_app</span>::<span class="kw-2">*</span>;
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HasConstraint</span><span class="op">&lt;</span><span class="ident">X</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HasConstraint</span><span class="op">&lt;</span><span class="ident">X</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>: <span class="ident">BiTypeCon</span>
 {
   <span class="kw">fn</span> <span class="ident">with_constraint</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">BiApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
   <span class="kw">where</span>

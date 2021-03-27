@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["wrap_app",""]],"trait":[["BiTypeApp",""],["BiTypeAppGeneric",""],["BiTypeAppGenericCont",""],["BiTypeCon",""],["HasBiTypeApp",""]],"type":[["BiApp",""]]});
+initSidebarItems({"enum":[["Function",""],["FunctionMut",""],["FunctionOnce",""]],"fn":[["wrap_app",""]],"trait":[["BiTypeApp",""],["BiTypeAppGeneric",""],["BiTypeAppGenericCont",""],["BiTypeCon",""],["FnClone",""],["HasBiTypeApp",""],["IsFn",""],["IsFnMut",""],["IsFnOnce",""],["ToBiTypeApp",""]],"type":[["BiApp",""]]});
