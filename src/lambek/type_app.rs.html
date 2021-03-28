@@ -539,6 +539,53 @@
 <span id="536">536</span>
 <span id="537">537</span>
 <span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Traits for the kind of unary type application, `Type -&gt; Type`.</span>
 <span class="doccomment">//!</span>
@@ -725,7 +772,7 @@
 <span class="doccomment">/// We wrap an `Applied` type into a</span>
 <span class="doccomment">/// `Box&lt;dyn HasTypeApp&lt;&#39;a, F, X&gt;&gt;` to discharge the</span>
 <span class="doccomment">/// `TypeApp` constraint. When we need the concrete type</span>
-<span class="doccomment">/// again, we then call [get_applied](HasTypeApp::get_applied)</span>
+<span class="doccomment">/// again, we then call [get_applied_box](HasTypeApp::get_applied_box)</span>
 <span class="doccomment">/// which again requires the `TypeApp` trait bound to be present.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Using `HasTypeApp`, the trait `Functor` can instead be</span>
@@ -759,7 +806,7 @@
   <span class="doccomment">/// Get an applied type `FX` out of a</span>
   <span class="doccomment">/// `Box&lt;dyn HasTypeApp&lt;&#39;a, F, X&gt;&gt;` with the trait bound</span>
   <span class="doccomment">/// `F: TypeApp&lt;&#39;a, X&gt;` present.</span>
-  <span class="kw">fn</span> <span class="ident">get_applied</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">F</span>::<span class="ident">Applied</span><span class="op">&gt;</span>
+  <span class="kw">fn</span> <span class="ident">get_applied_box</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">F</span>::<span class="ident">Applied</span><span class="op">&gt;</span>
   <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span><span class="op">&gt;</span>;
 
@@ -811,7 +858,7 @@
   <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>, <span class="ident">Applied</span> <span class="op">=</span> <span class="ident">FX</span><span class="op">&gt;</span>,
   {
-    <span class="kw">fn</span> <span class="ident">get_applied</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">FX</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">get_applied_box</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">FX</span><span class="op">&gt;</span>
     {
       <span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="number">0</span>)
     }
@@ -836,6 +883,26 @@
   }
 
   <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Applied</span>(<span class="ident">fx</span>))
+}
+
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HasTypeAppSized</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>: <span class="lifetime">&#39;a</span>
+{
+  <span class="kw">fn</span> <span class="ident">get_applied</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">F</span>::<span class="ident">Applied</span>
+  <span class="kw">where</span>
+    <span class="ident">F</span>: <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span><span class="op">&gt;</span>,
+    <span class="ident">F</span>::<span class="ident">Applied</span>: <span class="ident">Sized</span>;
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">HasTypeAppSized</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">X</span><span class="op">&gt;</span>
+  <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">HasTypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">X</span><span class="op">&gt;</span><span class="op">&gt;</span>
+{
+  <span class="kw">fn</span> <span class="ident">get_applied</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">F</span>::<span class="ident">Applied</span>
+  <span class="kw">where</span>
+    <span class="ident">F</span>: <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span><span class="op">&gt;</span>,
+    <span class="ident">F</span>::<span class="ident">Applied</span>: <span class="ident">Sized</span>,
+  {
+    <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">get_applied_box</span>()
+  }
 }
 
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
@@ -901,18 +968,39 @@
   }
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ComposeF</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">G</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">G</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Compose</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">G</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">G</span><span class="op">&gt;</span>);
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Compose</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">G</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(
-  <span class="kw">pub</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">G</span>, <span class="ident">X</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-);
+<span class="comment">// pub trait HasCompose &lt;&#39;a, F: &#39;a, G: &#39;a, X: &#39;a &gt;</span>
+<span class="comment">// {</span>
+<span class="comment">//   fn get_compose(self: Box&lt;Self&gt;) -&gt; F::Applied</span>
+<span class="comment">//   where</span>
+<span class="comment">//     G: TypeApp&lt;&#39;a, X&gt;,</span>
+<span class="comment">//     F: TypeApp&lt;&#39;a, G::Applied&gt;</span>
+<span class="comment">//   ;</span>
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">G</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">ComposeF</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">G</span><span class="op">&gt;</span> {}
+<span class="comment">//   fn get_compose_wrapped(self: Box&lt;Self&gt;) -&gt;</span>
+<span class="comment">//     App&lt;&#39;a, F, App&lt;&#39;a, G, X&gt;&gt;</span>
+<span class="comment">//   ;</span>
+<span class="comment">// }</span>
+
+<span class="comment">// fn wrap_compose &lt;&#39;a, F: &#39;a, G: &#39;a, X: &#39;a, FGX: &#39;a, GX: &#39;a &gt;</span>
+<span class="comment">//   (fgx: FGX)</span>
+<span class="comment">//   -&gt; Box&lt; dyn HasCompose&lt;&#39;a, F, G, X&gt; + &#39;a &gt;</span>
+<span class="comment">// where</span>
+<span class="comment">//   G: TypeApp&lt;&#39;a, X, Applied = GX&gt;,</span>
+<span class="comment">//   F: TypeApp&lt;&#39;a, GX, Applied = FGX&gt;,</span>
+<span class="comment">// {</span>
+<span class="comment">//   struct Composed&lt;X&gt;(X);</span>
+
+<span class="comment">//   todo!()</span>
+<span class="comment">// }</span>
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">G</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">Compose</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">G</span><span class="op">&gt;</span> {}
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">G</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span><span class="op">&gt;</span>
-  <span class="kw">for</span> <span class="ident">ComposeF</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">G</span><span class="op">&gt;</span>
+  <span class="kw">for</span> <span class="ident">Compose</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">G</span><span class="op">&gt;</span>
 {
-  <span class="kw">type</span> <span class="ident">Applied</span> <span class="op">=</span> <span class="ident">Compose</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">G</span>, <span class="ident">X</span><span class="op">&gt;</span>;
+  <span class="kw">type</span> <span class="ident">Applied</span> <span class="op">=</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">G</span>, <span class="ident">X</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// `App&lt;Identity, X&gt; ~ X`</span>
@@ -1005,7 +1093,7 @@
 {
   <span class="kw">fn</span> <span class="ident">get_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">X</span>
   {
-    <span class="kw-2">*</span><span class="ident">x</span>.<span class="ident">get_applied</span>()
+    <span class="kw-2">*</span><span class="ident">x</span>.<span class="ident">get_applied_box</span>()
   }
 }
 
@@ -1013,7 +1101,7 @@
 {
   <span class="kw">fn</span> <span class="ident">get_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">X</span>
   {
-    <span class="kw-2">*</span><span class="ident">x</span>.<span class="ident">get_applied</span>()
+    <span class="kw-2">*</span><span class="ident">x</span>.<span class="ident">get_applied_box</span>()
   }
 }
 
@@ -1021,7 +1109,7 @@
 {
   <span class="kw">fn</span> <span class="ident">get_mut_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">X</span>
   {
-    <span class="kw-2">*</span><span class="ident">x</span>.<span class="ident">get_applied</span>()
+    <span class="kw-2">*</span><span class="ident">x</span>.<span class="ident">get_applied_box</span>()
   }
 }
 
@@ -1077,7 +1165,13 @@
 
 <span class="doccomment">/// `App&lt;ResultF&lt;E&gt;, X&gt; ~ Result&lt;E, X&gt;`</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResultF</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>);
-<span class="macro">impl_type_app</span><span class="macro">!</span>(<span class="ident">ResultF</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>, <span class="prelude-ty">Result</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> <span class="ident">TypeCon</span> <span class="kw">for</span> <span class="ident">ResultF</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">E</span>: <span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">TypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ResultF</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>
+{
+  <span class="kw">type</span> <span class="ident">Applied</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">X</span>, <span class="ident">E</span><span class="op">&gt;</span>;
+}
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="lambek"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

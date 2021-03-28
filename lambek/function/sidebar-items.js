@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FunctionF",""],["FunctionMutF",""],["FunctionOnceF",""]],"fn":[["wrap_function",""],["wrap_function_mut",""],["wrap_function_once",""]],"trait":[["IsFn",""],["IsFnMut",""],["IsFnOnce",""]]});
