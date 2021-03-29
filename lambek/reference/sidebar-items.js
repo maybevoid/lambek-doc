@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Borrow","`App<'a, Borrow, X> ~ &'a X`"],["BorrowMut","`App<'a, BorrowMut, X> ~ &'a mut X`"],["BoxF","`App<BoxF, X> ~ Box<X>`"],["Own","`App<Own, X> ~ X`"]],"trait":[["IsBox",""],["IsMutRef",""],["IsOwn",""],["IsRef","Allows functions to be polymorphic over both mutable and immutable references."]]});
