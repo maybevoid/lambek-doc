@@ -177,16 +177,16 @@
   }
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">LiftRow</span><span class="op">&lt;</span><span class="ident">Ref</span><span class="op">&gt;</span>: <span class="ident">RowCon</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">LiftRow</span>: <span class="ident">RowCon</span>
 {
   <span class="kw">fn</span> <span class="ident">lift</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">G</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Trans</span><span class="op">&gt;</span>(
-    <span class="ident">trans</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">Ref</span>, <span class="ident">Trans</span><span class="op">&gt;</span>,
+    <span class="ident">trans</span>: <span class="ident">Trans</span>,
     <span class="ident">row</span>: <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>,
   ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
   <span class="kw">where</span>
     <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
-    <span class="ident">Trans</span>: <span class="ident">NaturalTransformation</span><span class="op">&lt;</span><span class="ident">Ref</span>, <span class="ident">F</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
+    <span class="ident">Trans</span>: <span class="ident">NaturalTransformation</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
     <span class="ident">F</span>: <span class="ident">TypeAppGeneric</span>,
     <span class="ident">G</span>: <span class="ident">TypeAppGeneric</span>;
 }
