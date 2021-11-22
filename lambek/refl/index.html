@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Implementation for the type quality constraint, a.k.a. reflexivity."><meta name="keywords" content="rust, rustlang, rust-lang, refl"><title>lambek::refl - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../lambek/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a><h2 class="location">Module refl</h2><div class="sidebar-elems"><div class="block items"><ul><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></div><div id="sidebar-vars" data-name="refl" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Module <a href="../index.html">lambek</a>::<wbr><a class="mod" href="#">refl</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../../src/lambek/refl.rs.html#1-309" title="goto source code">[src]</a></span></h1><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Implementation for the type quality constraint, a.k.a. reflexivity.</p>
+<p>This module introduces the <code>Refl</code> trait with an associated type <code>Refl</code>,
+which is implemented for all types with the <code>Refl::Refl</code> being the
+same type that implements <code>Refl</code>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">trait</span> <span class="ident">Refl</span> {
+    <span class="kw">type</span> <span class="ident">Refl</span>;
+}
+
+<span class="kw">impl</span> <span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Refl</span> <span class="kw">for</span> <span class="ident">T</span> {
+    <span class="kw">type</span> <span class="ident">Refl</span> <span class="op">=</span> <span class="ident">T</span>;
+}</code></pre></div>
+<p>This means that if we have <code>T1: Refl&lt;Refl=T2&gt;</code>, that means that <code>T1</code> and
+<code>T2</code> are in fact the same type and can be used interchangeably.</p>
+<p>The <code>Refl</code> trait by itself do not have much use, as Rust currently have
+amnesia on the concrete type of an associated type. For example, the
+following code would fail to compile, even though conceptually it should
+succeed:</p>
+
+<div class='information'><div class='tooltip compile_fail'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered compile_fail"><code><span class="kw">use</span> <span class="ident">lambek::refl::Refl</span>;
+
+<span class="kw">fn</span> <span class="ident">reflect_self</span><span class="op">&lt;</span><span class="ident">T1</span>, <span class="ident">T2</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">T1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T2</span>
+<span class="kw">where</span>
+    <span class="ident">T1</span>: <span class="ident">Refl</span><span class="op">&lt;</span><span class="ident">Refl</span><span class="op">=</span><span class="ident">T2</span><span class="op">&gt;</span>,
+{
+    <span class="ident">x</span>
+}</code></pre></div>
+<p>We have already know that <code>T1</code> implements <code>Refl</code> and <code>T1::Refl</code> must be
+also <code>T1</code>, so <code>T2</code> must be equal to <code>T1</code> and so we should be able to return
+<code>x</code> as <code>T2</code> instead of <code>T1</code>. But the Rust compiler currently have amnesia
+and forgot the concrete type of <code>T1::Refl</code>. So it cannot conclude that
+<code>T1</code> and <code>T2</code> are equal.</p>
+<p>Fortunately, there is in fact a way for us to help Rust recover from
+amnesia, and remember back the concrete type for <code>T1::Refl</code>. We do this
+by defining a trait <a href="trait.ReflSelf.html" title="ReflSelf"><code>ReflSelf</code></a> that extends <a href="trait.Refl.html" title="Refl"><code>Refl</code></a>, with a generic
+implementation of how to reflect back itself:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">trait</span> <span class="ident">ReflSelf</span>: <span class="ident">Refl</span> {
+    <span class="kw">fn</span> <span class="ident">refl_self</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Refl</span>;
+}
+
+<span class="kw">impl</span> <span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ReflSelf</span> <span class="kw">for</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">refl_self</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Refl</span> {
+        <span class="self">self</span>
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">reflect_self</span><span class="op">&lt;</span><span class="ident">T1</span>, <span class="ident">T2</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">T1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T2</span>
+<span class="kw">where</span>
+    <span class="ident">T1</span>: <span class="ident">Refl</span><span class="op">&lt;</span><span class="ident">Refl</span><span class="op">=</span><span class="ident">T2</span><span class="op">&gt;</span>,
+{
+    <span class="ident">T1::refl_self</span>(<span class="ident">x</span>)
+}</code></pre></div>
+<p>The trait <a href="trait.ReflSelf.html" title="ReflSelf"><code>ReflSelf</code></a> implements <a href="trait.Refl.html" title="Refl"><code>Refl</code></a> and also provide a method
+<a href="trait.ReflSelf.html#tymethod.refl_self"><code>refl_self</code></a> that accepts a <code>self</code> and returns
+<code>Self::Refl</code>. Since we know <code>Self::Refl</code> is in fact the same as <code>Self</code>,
+the implementation is trivial with us simply returning <code>self</code>.</p>
+<p>Notice that in the generic implementation of <a href="trait.ReflSelf.html" title="ReflSelf"><code>ReflSelf</code></a>, we state
+that the trait is implemented for <em>all</em> types. This is allowed because
+in the trait implementation scope, Rust do look up the trait
+implementation for <code>Refl</code>, and find out that <code>Refl</code> is implemented
+for all types. In other words, at this stage, Rust have not have amnesia
+and still remember that the concrete type for <code>Refl::Refl</code> is in fact
+<code>Self</code>. Using that fact, we easily implement
+<a href="trait.ReflSelf.html#tymethod.refl_self"><code>refl_self</code></a> to return <code>self</code> without Rust
+complaining.</p>
+<p>Using <a href="trait.ReflSelf.html" title="ReflSelf"><code>ReflSelf</code></a>, we help put a sticky note in Rust’s mind, and we
+can use that to remind Rust again what the type of <code>Refl::Refl</code> is
+when we need it. We now try to implement <code>reflect_self</code> again,
+which now calls <a href="trait.ReflSelf.html#tymethod.refl_self" title="ReflSelf::refl_self"><code>ReflSelf::refl_self</code></a> to convert <code>T1</code> to <code>T1::Refl</code>.
+But since we also specify the constraint <code>T1: Refl&lt;Refl=T2&gt;</code>, that
+means Rust actually thinks that the type <code>T1::Refl</code> returned by
+<a href="trait.ReflSelf.html#tymethod.refl_self" title="ReflSelf::refl_self"><code>ReflSelf::refl_self</code></a> must also be <code>T2</code>, and therefore the code
+compiles successfully.</p>
+<p>Using the same technique, we can also construct new traits that extend
+<code>Refl</code> to perform any reflexivity conversion that we need. For example,
+let’s say we have a <code>Vec&lt;T1&gt;</code> we know that <code>T1: Refl&lt;Refl=T2&gt;</code>.
+Following that we should be able to convert our <code>Vec&lt;T1&gt;</code> into a
+<code>Vec&lt;T2&gt;</code>. So we can define a <code>ReflVec</code> trait like follows:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">lambek::refl::Refl</span>;
+
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ReflVec</span>: <span class="ident">Refl</span> {
+    <span class="kw">fn</span> <span class="ident">refl_vec</span>(<span class="ident">left</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Refl</span><span class="op">&gt;</span>;
+}
+
+<span class="kw">impl</span> <span class="op">&lt;</span><span class="ident">X</span><span class="op">&gt;</span> <span class="ident">ReflVec</span> <span class="kw">for</span> <span class="ident">X</span> {
+    <span class="kw">fn</span> <span class="ident">refl_vec</span>(<span class="ident">left</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Refl</span><span class="op">&gt;</span> {
+        <span class="ident">left</span>
+    }
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reflect_vec</span><span class="op">&lt;</span><span class="ident">T1</span>, <span class="ident">T2</span><span class="op">&gt;</span>(<span class="ident">xs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T1</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T2</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">T1</span>: <span class="ident">Refl</span><span class="op">&lt;</span><span class="ident">Refl</span><span class="op">=</span><span class="ident">T2</span><span class="op">&gt;</span>,
+{
+    <span class="ident">T1::refl_vec</span>(<span class="ident">xs</span>)
+}</code></pre></div>
+<p>We can also use the technique to cast anything, including references and
+boxed values, so that the conversion can be done at zero cost. <code>lambek</code>
+also provides the <a href="trait.ReflApp.html" title="ReflApp"><code>ReflApp</code></a> trait, so that users can easily reflect
+any higher kinded types using the proxy types that implement <a href="../type_app/trait.TypeApp.html" title="TypeApp"><code>TypeApp</code></a>.</p>
+</div></details><h2 id="traits" class="section-header"><a href="#traits">Traits</a></h2>
+<div class="item-table"><div class="item-left module-item"><a class="trait" href="trait.Refl.html" title="lambek::refl::Refl trait">Refl</a></div><div class="item-right docblock-short"><p>The type equality constraint, a.k.a reflexivity,  provides witness that
+two types are equal.</p>
+</div><div class="item-left module-item"><a class="trait" href="trait.ReflApp.html" title="lambek::refl::ReflApp trait">ReflApp</a></div><div class="item-right docblock-short"><p>Reflect higher kinded types when there is a type equality for the
+argument types.</p>
+</div><div class="item-left module-item"><a class="trait" href="trait.ReflSelf.html" title="lambek::refl::ReflSelf trait">ReflSelf</a></div><div class="item-right docblock-short"><p>Extend <code>Refl</code> to provide reflection on base values.</p>
+</div></div><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-left module-item"><a class="fn" href="fn.reflect_applied.html" title="lambek::refl::reflect_applied fn">reflect_applied</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="fn" href="fn.reflect_boxed.html" title="lambek::refl::reflect_boxed fn">reflect_boxed</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="fn" href="fn.reflect_value.html" title="lambek::refl::reflect_value fn">reflect_value</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="fn" href="fn.reflect_value_mut.html" title="lambek::refl::reflect_value_mut fn">reflect_value_mut</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="fn" href="fn.reflect_value_ref.html" title="lambek::refl::reflect_value_ref fn">reflect_value_ref</a></div><div class="item-right docblock-short"></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="lambek" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script>
+</body></html>
