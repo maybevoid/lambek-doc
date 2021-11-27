@@ -118,12 +118,16 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::type_app</span>::<span class="kw-2">*</span>;
 
 <span class="comment">// F: BiTypeCon :: Type -&gt; Type -&gt; Type</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BiTypeCon</span> {}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BiTypeCon</span>
+{
+}
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BiTypeApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">Y</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>:
   <span class="ident">BiTypeCon</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>

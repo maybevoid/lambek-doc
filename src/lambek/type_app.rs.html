@@ -537,6 +537,8 @@
 <span id="537">537</span>
 <span id="538">538</span>
 <span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Traits for the kind of unary type application, `Type -&gt; Type`.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Higher kinded types (HKT) such as `Type -&gt; Type` are not natively</span>
@@ -582,7 +584,9 @@
 <span class="doccomment">/// [TypeAppGeneric] may sometimes be too strict, i.e. we may</span>
 <span class="doccomment">/// want to allow types that implement [TypeApp] for some</span>
 <span class="doccomment">/// constrained type arguments such as `Send` or `&#39;static`.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TypeCon</span> {}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TypeCon</span>
+{
+}
 
 <span class="doccomment">/// A type `F: TypeApp&lt;X&gt;` have the associated type `Applied` as the</span>
 <span class="doccomment">/// result of applying a type `F` of kind `Type -&gt; Type` to `X`.</span>

@@ -92,13 +92,17 @@
 <span id="92">92</span>
 <span id="93">93</span>
 <span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
   <span class="ident">nat_trans</span>::<span class="kw-2">*</span>,
   <span class="ident">type_app</span>::<span class="kw-2">*</span>,
 };
 
 <span class="comment">// Row: RowCon :: (Type -&gt; Type) -&gt; Type</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RowCon</span> {}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RowCon</span>
+{
+}
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RowApp</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>: <span class="ident">RowCon</span>
 <span class="kw">where</span>
