@@ -102,17 +102,13 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
-<span id="105">105</span>
-<span id="106">106</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
   <span class="ident">nat_trans</span>::<span class="kw-2">*</span>,
   <span class="ident">row</span>::<span class="kw-2">*</span>,
   <span class="ident">type_app</span>::<span class="kw-2">*</span>,
 };
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Product</span>
-{
-}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Product</span> {}
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Top</span>;
 
@@ -143,7 +139,7 @@
 {
   <span class="kw">fn</span> <span class="ident">with_row_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
     <span class="ident">cont</span>: <span class="kw">impl</span> <span class="ident">RowAppGenericCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  ) -&gt; <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">F</span>: <span class="ident">TypeAppGeneric</span>,
@@ -158,7 +154,7 @@
 {
   <span class="kw">fn</span> <span class="ident">with_row_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
     <span class="ident">cont</span>: <span class="kw">impl</span> <span class="ident">RowAppGenericCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  ) -&gt; <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">F</span>: <span class="ident">TypeAppGeneric</span>,
@@ -174,7 +170,7 @@
   <span class="kw">fn</span> <span class="ident">lift</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">G</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Trans</span><span class="op">&gt;</span>(
     <span class="kw">_</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">Ref</span>, <span class="ident">Trans</span><span class="op">&gt;</span>,
     <span class="kw">_</span>: <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>,
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
+  ) -&gt; <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
   <span class="kw">where</span>
     <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
@@ -194,7 +190,7 @@
   <span class="kw">fn</span> <span class="ident">lift</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">G</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Trans</span><span class="op">&gt;</span>(
     <span class="ident">trans</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">Ref</span>, <span class="ident">Trans</span><span class="op">&gt;</span>,
     <span class="ident">row</span>: <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>,
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
+  ) -&gt; <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
   <span class="kw">where</span>
     <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,

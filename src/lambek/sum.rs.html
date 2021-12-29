@@ -109,17 +109,13 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
-<span id="112">112</span>
-<span id="113">113</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
   <span class="ident">nat_trans</span>::<span class="kw-2">*</span>,
   <span class="ident">row</span>::<span class="kw-2">*</span>,
   <span class="ident">type_app</span>::<span class="kw-2">*</span>,
 };
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Sum</span>
-{
-}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Sum</span> {}
 
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Bottom</span> {}
 
@@ -159,7 +155,7 @@
 {
   <span class="kw">fn</span> <span class="ident">with_row_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
     <span class="ident">cont</span>: <span class="kw">impl</span> <span class="ident">RowAppGenericCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  ) -&gt; <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">F</span>: <span class="ident">TypeAppGeneric</span>,
@@ -174,7 +170,7 @@
 {
   <span class="kw">fn</span> <span class="ident">with_row_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
     <span class="ident">cont</span>: <span class="kw">impl</span> <span class="ident">RowAppGenericCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+  ) -&gt; <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">F</span>: <span class="ident">TypeAppGeneric</span>,
@@ -190,7 +186,7 @@
   <span class="kw">fn</span> <span class="ident">lift</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">G</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Trans</span><span class="op">&gt;</span>(
     <span class="kw">_</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">Ref</span>, <span class="ident">Trans</span><span class="op">&gt;</span>,
     <span class="ident">row</span>: <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>,
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
+  ) -&gt; <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
   <span class="kw">where</span>
     <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
@@ -210,7 +206,7 @@
   <span class="kw">fn</span> <span class="ident">lift</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">F</span>: <span class="lifetime">&#39;a</span>, <span class="ident">G</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Trans</span><span class="op">&gt;</span>(
     <span class="ident">trans</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">Ref</span>, <span class="ident">Trans</span><span class="op">&gt;</span>,
     <span class="ident">row</span>: <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>,
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
+  ) -&gt; <span class="ident">AppRow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">G</span><span class="op">&gt;</span>
   <span class="kw">where</span>
     <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
@@ -219,8 +215,8 @@
     <span class="ident">G</span>: <span class="ident">TypeAppGeneric</span>,
   {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">row</span>.<span class="ident">get_applied</span>() {
-      <span class="ident">Inl</span>(<span class="ident">fx</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wrap_row</span>(<span class="ident">Inl</span>(<span class="ident">Trans::lift</span>(<span class="ident">trans</span>, <span class="ident">fx</span>))),
-      <span class="ident">Inr</span>(<span class="ident">tail</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wrap_row</span>(<span class="ident">Inr</span>(<span class="ident">Tail::lift</span>(<span class="ident">trans</span>, <span class="ident">tail</span>))),
+      <span class="ident">Inl</span>(<span class="ident">fx</span>) =&gt; <span class="ident">wrap_row</span>(<span class="ident">Inl</span>(<span class="ident">Trans::lift</span>(<span class="ident">trans</span>, <span class="ident">fx</span>))),
+      <span class="ident">Inr</span>(<span class="ident">tail</span>) =&gt; <span class="ident">wrap_row</span>(<span class="ident">Inr</span>(<span class="ident">Tail::lift</span>(<span class="ident">trans</span>, <span class="ident">tail</span>))),
     }
   }
 }

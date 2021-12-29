@@ -49,7 +49,7 @@
   <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
   <span class="kw">const</span> <span class="ident">Value</span>: <span class="self">Self</span>;
 
-  <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+  <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
@@ -63,7 +63,7 @@
   <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
   <span class="kw">const</span> <span class="ident">Value</span>: <span class="ident">Z</span> <span class="op">=</span> <span class="ident">Z</span>;
 
-  <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Z</span>
+  <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Z</span>
   {
     <span class="ident">Z</span>
   }
@@ -76,13 +76,13 @@
   <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
   <span class="kw">const</span> <span class="ident">Value</span>: <span class="ident">S</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">S</span>(<span class="ident">PhantomData</span>);
 
-  <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">S</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>
+  <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">S</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>
   {
     <span class="ident">S</span>(<span class="ident">PhantomData</span>)
   }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">succ</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="kw">_</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">S</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">succ</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="kw">_</span>: <span class="ident">N</span>) -&gt; <span class="ident">S</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>
 {
   <span class="ident">S</span>(<span class="ident">PhantomData</span>)
 }

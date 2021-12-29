@@ -24,7 +24,7 @@
   <span class="kw">fn</span> <span class="ident">lift</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">X</span><span class="op">&gt;</span>(
     <span class="ident">trans</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">Ref</span>, <span class="self">Self</span><span class="op">&gt;</span>,
     <span class="ident">fx</span>: <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">X</span><span class="op">&gt;</span>,
-  ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">G</span>, <span class="ident">X</span><span class="op">&gt;</span>
+  ) -&gt; <span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">G</span>, <span class="ident">X</span><span class="op">&gt;</span>
   <span class="kw">where</span>
     <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>;
 }
