@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["App","Newtype for a boxed value of [HasTypeApp]."]],"trait":[["HasTypeApp","Encapsulates an applied type into a trait object to prevent `TypeApp` constraints from propagating to type signatures."]]});

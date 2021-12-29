@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["with_type_app_witness",""]],"trait":[["TypeAppCont",""],["TypeAppGeneric",""],["TypeAppGenericUnsized",""],["TypeAppWitness",""]]});

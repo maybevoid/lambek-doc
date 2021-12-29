@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["TypeApp","A type `F: TypeApp<X>` have the associated type `Applied` as the result of applying a type `F` of kind `Type -> Type` to `X`."],["TypeCon","A proxy type `F: TypeCon` to mark itself as having the kind `Type -> Type`."]],"type":[["Applied",""]]});

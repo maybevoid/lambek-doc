@@ -292,7 +292,7 @@
 
 <span class="kw">impl</span> <span class="ident">TypeAppGenericUnsized</span> <span class="kw">for</span> <span class="ident">Borrow</span>
 {
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Cont</span><span class="op">&gt;</span>) -&gt; <span class="ident">R</span>
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">Cont</span>) -&gt; <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">Cont</span>: <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
@@ -350,7 +350,7 @@
 
 <span class="kw">impl</span> <span class="ident">TypeAppGenericUnsized</span> <span class="kw">for</span> <span class="ident">BorrowMut</span>
 {
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Cont</span><span class="op">&gt;</span>) -&gt; <span class="ident">R</span>
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">Cont</span>) -&gt; <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">Cont</span>: <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
@@ -368,7 +368,7 @@
 
 <span class="kw">impl</span> <span class="ident">TypeAppGenericUnsized</span> <span class="kw">for</span> <span class="ident">Own</span>
 {
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Cont</span><span class="op">&gt;</span>) -&gt; <span class="ident">R</span>
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">Cont</span>) -&gt; <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">Cont</span>: <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
@@ -416,7 +416,7 @@
 
 <span class="kw">impl</span> <span class="ident">TypeAppGenericUnsized</span> <span class="kw">for</span> <span class="ident">BoxF</span>
 {
-  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Cont</span><span class="op">&gt;</span>) -&gt; <span class="ident">R</span>
+  <span class="kw">fn</span> <span class="ident">with_type_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">R</span>: <span class="lifetime">&#39;a</span>, <span class="ident">Cont</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cont</span>: <span class="ident">Cont</span>) -&gt; <span class="ident">R</span>
   <span class="kw">where</span>
     <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">Cont</span>: <span class="ident">TypeAppCont</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">X</span>, <span class="ident">R</span><span class="op">&gt;</span>,
